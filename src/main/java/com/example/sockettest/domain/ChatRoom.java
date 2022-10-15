@@ -21,6 +21,15 @@ public class ChatRoom {
     }
 
     public void handlerActions(WebSocketSession session, ChatMessage chatMessage, ChatService chatService) {
+        if (chatMessage.getType().equals(ChatMessage.MessageType.LEAVE)) {
+            if (sessions.contains(session)) {
+                sessions.remove(session);
+            }
+            chatMessage.setMessage(chatMessage.getSender() + "님이 나갔습니다.");
+            sendMessage(chatMessage, chatService);
+            return;
+        }
+
         if (chatMessage.getType().equals(ChatMessage.MessageType.ENTER)) {
             sessions.add(session);
             chatMessage.setMessage(chatMessage.getSender() + "님이 입장했습니다.");
