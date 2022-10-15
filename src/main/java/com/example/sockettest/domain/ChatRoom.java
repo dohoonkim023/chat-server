@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,10 +21,11 @@ public class ChatRoom {
         this.name = name;
     }
 
-    public void handlerActions(WebSocketSession session, ChatMessage chatMessage, ChatService chatService) {
+    public void handlerActions(WebSocketSession session, ChatMessage chatMessage, ChatService chatService) throws IOException {
         if (chatMessage.getType().equals(ChatMessage.MessageType.LEAVE)) {
             if (sessions.contains(session)) {
                 sessions.remove(session);
+                session.close();
             }
             chatMessage.setMessage(chatMessage.getSender() + "님이 나갔습니다.");
             sendMessage(chatMessage, chatService);
@@ -35,7 +37,6 @@ public class ChatRoom {
             chatMessage.setMessage(chatMessage.getSender() + "님이 입장했습니다.");
         }
         sendMessage(chatMessage, chatService);
-
     }
 
     private <T> void sendMessage(T message, ChatService chatService) {
