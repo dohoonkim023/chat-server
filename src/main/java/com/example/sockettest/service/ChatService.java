@@ -1,6 +1,7 @@
 package com.example.sockettest.service;
 
 import com.example.sockettest.domain.ChatRoom;
+import com.example.sockettest.domain.Dialog;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,10 @@ public class ChatService {
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
+    }
+
+    public List<Dialog> getDialog(String roomId) {
+        return (List<Dialog>) new Dialog(); // todo: date순으로 정렬해서 가져오기 구현
     }
 
 }

@@ -2,10 +2,12 @@ package com.example.sockettest.api;
 
 
 import com.example.sockettest.domain.ChatRoom;
+import com.example.sockettest.domain.Dialog;
 import com.example.sockettest.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,7 +22,12 @@ public class ChatController {
     }
 
     @GetMapping
-    public List<ChatRoom> findAllRoom() {
-        return chatService.findAllRoom();
+    public List<Dialog> getDialog(@RequestBody String roomId) {
+        return chatService.getDialog(roomId);
     }
+
+//    @GetMapping
+//    public List<ChatRoom> findAllRoom() {
+//        return chatService.findAllRoom();
+//    }
 }
