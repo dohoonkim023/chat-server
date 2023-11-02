@@ -1,25 +1,26 @@
 package com.example.sockettest.domain;
 
 import com.example.sockettest.service.ChatService;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-
 @Getter
 public class ChatRoom {
-    private String roomId;
-    private Set<WebSocketSession> sessions = new HashSet<>();
+
+    private final String roomId;
+    private final Set<WebSocketSession> sessions = new HashSet<>();
 
     @Builder
     public ChatRoom(String roomId) {
         this.roomId = roomId;
     }
 
-    public void handlerActions(WebSocketSession session, ChatMessage chatMessage, ChatService chatService) throws IOException {
+    public void handlerActions(WebSocketSession session, ChatMessage chatMessage,
+        ChatService chatService) throws IOException {
         if (chatMessage.getType().equals(ChatMessage.MessageType.LEAVE)) {
             if (sessions.contains(session)) {
                 sessions.remove(session);
@@ -39,6 +40,6 @@ public class ChatRoom {
 
     private <T> void sendMessage(T message, ChatService chatService) {
         sessions.parallelStream()
-                .forEach(session -> chatService.sendMessage(session, message));
+            .forEach(session -> chatService.sendMessage(session, message));
     }
 }

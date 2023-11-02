@@ -9,5 +9,4 @@ public class SocketTestApplication {
     public static void main(String[] args) {
         SpringApplication.run(SocketTestApplication.class, args);
     }
-
 }
